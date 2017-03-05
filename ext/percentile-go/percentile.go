@@ -1,11 +1,15 @@
 package main
 
 import (
+	"C"
 	"math"
 	"sort"
 )
 
-func Percentile(input []float64, percent float64) (percentile float64) {
+func main() {}
+
+//export percentile
+func percentile(input []float64, percent float64) (percentile float64) {
 	if len(input) == 0 || percent == 0 {
 		return math.NaN()
 	}
@@ -59,4 +63,3 @@ func round(input float64) (rounded float64) {
 	}
 	return rounded
 }
-func main() {}
