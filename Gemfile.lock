@@ -1,0 +1,29 @@
+GIT
+  remote: https://github.com/bkoski/array_stats.git
+  revision: 437dc00eca1990c9d1f0723bc010e71bf4ecb20b
+  specs:
+    array_stats (0.6.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    benchmark-ips (2.7.2)
+    ffi (1.9.18)
+    rake (12.0.0)
+    rake-compiler (1.0.3)
+      rake
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  array_stats!
+  benchmark-ips
+  ffi
+  rake-compiler
+
+RUBY VERSION
+   ruby 2.3.3p222
+
+BUNDLED WITH
+   1.14.3

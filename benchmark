@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+require 'benchmark/ips'
+require 'ffi'
+require 'array_stats'
+
+module PercentileBench
+  extend FFI::Library
+  ffi_lib File.expand_path("./ext/percentile-go/percentile.so", File.dirname(__FILE__))
+  attach_function :gopercentile, :percentile, [:float], :float
+end
+test_array = [34.5, 56.4, 104.32, 4.5, 90.0]
+
+puts "\n================== Test Percentile =================="
+Benchmark.ips do |x|
+  x.report("Go percentile") do |times|
+    i = 0
+    while i < times
+      test_array.gopercentile
+      i += 1
+    end
+  end
+
+  x.report("Array stats percentile") do |times|
+    i = 0
+    while i < times
+      test_array.percentile
+      i += 1
+    end
+  end
+
+  x.compare!
+end
