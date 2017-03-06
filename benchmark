@@ -6,21 +6,25 @@ require 'array_stats'
 module PercentileBench
   extend FFI::Library
   ffi_lib File.expand_path("./ext/percentile-go/percentile.so", File.dirname(__FILE__))
-  attach_function :gopercentile, :percentile, [:pointer, :float], :float
+  attach_function :gopercentile, :percentile, [:pointer, :int, :double], :double
+end
+
+class Array
+  include PercentileBench
+  def percentile_go(percent)
+    pointer = FFI::MemoryPointer.new(:double, self.size)
+    pointer.put_array_of_float64(0, self)
+    gopercentile(pointer, self.size, percent)
+  end
 end
 test_array = [34.5, 56.4, 104.32, 4.5, 90.0]
-offset = 0
-percent = 50
 
 puts "\n================== Test Percentile =================="
 Benchmark.ips do |x|
   x.report("Go percentile") do |times|
     i = 0
     while i < times
-      pointer = FFI::MemoryPointer.new :float, percent
-      pointer.put_array_of_float64 offset, test_array
-      result_pointer = PercentileBench.gopercentile(pointer, percent)
-      result_pointer.read_double
+      test_array.percentile_go(50)
       i += 1
     end
   end

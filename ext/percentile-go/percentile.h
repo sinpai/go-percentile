@@ -53,7 +53,7 @@ extern "C" {
 #endif
 
 
-extern GoFloat64 percentile(GoSlice p0, GoFloat64 p1);
+extern GoFloat64 percentile(void* p0, int p1, GoFloat64 p2);
 
 #ifdef __cplusplus
 }

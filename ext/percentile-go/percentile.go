@@ -4,12 +4,17 @@ import (
 	"C"
 	"math"
 	"sort"
+	"unsafe"
 )
 
-func main() {}
-
 //export percentile
-func percentile(input []float64, percent float64) (percentile float64) {
+func percentile(cArray unsafe.Pointer, l C.int, percent float64) (percentile float64) {
+	input := []float64{}
+
+	for index := 0; index < int(l); index++ {
+		item := *(*C.double)(unsafe.Pointer(uintptr(unsafe.Pointer(cArray)) + uintptr(index)*unsafe.Sizeof(cArray)))
+		input = append(input, float64(item))
+	}
 	if len(input) == 0 || percent == 0 {
 		return math.NaN()
 	}
@@ -63,3 +68,5 @@ func round(input float64) (rounded float64) {
 	}
 	return rounded
 }
+
+func main() {}
